@@ -1,43 +1,19 @@
-const Discord = require('discord.js');
-const figlet = require('figlet');
-const colors = require('colors');
-const readline = require('readline');
-const commando = require(`discord.js-commando`);
+import discord
+from discord.ext import commands
 
-const config = require('./config.json');
-const bot = new commando.Client({
-    commandPrefix:'mass!'
-});
+bot = commands.Bot(command_prefix='$')
 
-const cmdsArray = [
-    "dmall <message>",
-    "dmrole <role> <message>"
-];
+@bot.event
+async def on_ready():
+    print('Logged in as')
+    print(bot.user.name)
+    print(bot.user.id)
+    print('------')
 
-bot.on("ready", () => {
-    clear();
-    console.log('______')
-});
+@bot.command()
+async def greet(ctx):
+    await ctx.send(":smiley: :wave: Hello, there!")
+
+bot.run('<YOUR_TOKEN_HERE>')
 
 
-bot.on("error", (error) => {
-    bot.login(config.token);
-});
-
-bot.registry.registerGroup('dms', 'help');
-bot.registry.registerDefaults();
-bot.registry.registerCommandsIn(__dirname + "/commands");
-
-if (process.env.BOT_TOKEN) bot.login(process.env.BOT_TOKEN);
-else bot.login(config.token);
-
-
-
-
-function clear() {
-    console.clear();
-    console.log(figlet.textSync("MassDM v3.3.0").green);
-    console.log("\n\nMass DM bot for Discord. \n Sends DMs to selected members of guild.\n  Forked and improved by Rana.");
-    console.log(`\nRandom send time set @ 0.01-${config.wait}s`);
-    console.log(` Type  ${config.prefix}help  in a chat.\n\n`);
-}
