@@ -1,0 +1,1 @@
+worker: nude bot.js 
